@@ -64,7 +64,7 @@ void setup() {
 
 }
 
-void debug_packet(int8_t forward_speed, int8_t right_speed) {
+void debug_packet(int8_t forward_speed, int8_t right_speed, uint8_t buttons) {
     
     if(forward_speed < 0)
     {
@@ -98,7 +98,9 @@ void debug_packet(int8_t forward_speed, int8_t right_speed) {
     Serial.print("Forward: ");
     Serial.print(forward_speed);
     Serial.print(" Right: ");
-    Serial.println(right_speed);
+    Serial.print(right_speed);
+    Serial.print(" Buttons: ");
+    Serial.println(buttons);
 }
 
 void loop() {
@@ -116,15 +118,16 @@ void loop() {
 
       int8_t forward_speed =  myController->axisY() * 100 / 512;
       int8_t right_speed = myController->axisRX() * 100 / 512;
-      //gamepad->buttons();
+      uint8_t buttons = myController->buttons();
 
       packet.forward = forward_speed;
       packet.right = right_speed;
+      packet.buttons = buttons;
 
       Serial2.write((uint8_t*)&packet, sizeof(packet));
       delay(150);
 
-      debug_packet(forward_speed, right_speed);
+      debug_packet(forward_speed, right_speed, buttons);
 
     } 
   }
