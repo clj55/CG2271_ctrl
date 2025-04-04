@@ -130,5 +130,10 @@ void loop() {
       debug_packet(forward_speed, right_speed, buttons);
 
     } 
+  } else {
+      packet.forward = 0;
+      packet.right = 0;
+      packet.buttons = 0;
+      Serial2.write((uint8_t*)&packet, sizeof(packet));
   }
 }
